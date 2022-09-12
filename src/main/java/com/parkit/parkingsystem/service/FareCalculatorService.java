@@ -14,21 +14,36 @@ public class FareCalculatorService {
 		long outHour = ticket.getOutTime().getTime();
 
 		// TODO: Some tests are failing here. Need to check if this logic is correct
-		float duration = outHour - inHour;
-		duration = duration/1000/60/60; // Convert from milliseconds to hours
-		System.out.println("duration: " + duration);
-		
-		switch (ticket.getParkingSpot().getParkingType()) {
-		case CAR: {
-			ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-			break;
-		}
-		case BIKE: {
-			ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unkown Parking Type");
+		float durationMillis = outHour - inHour;
+		float durationHour = durationMillis / 1000 / 60 / 60; // Convert from milliseconds to hours
+		System.out.println("duration: " + durationHour);
+
+		if (durationHour <= 0.5) {  // Free half hour
+			switch (ticket.getParkingSpot().getParkingType()) {
+			case CAR: {
+				ticket.setPrice(0);
+				break;
+			}
+			case BIKE: {
+				ticket.setPrice(0);
+				break;
+			}
+			default:
+				throw new IllegalArgumentException("Unkown Parking Type");
+			}
+		} else {  //
+			switch (ticket.getParkingSpot().getParkingType()) {
+			case CAR: {
+				ticket.setPrice(durationHour * Fare.CAR_RATE_PER_HOUR);
+				break;
+			}
+			case BIKE: {
+				ticket.setPrice(durationHour * Fare.BIKE_RATE_PER_HOUR);
+				break;
+			}
+			default:
+				throw new IllegalArgumentException("Unkown Parking Type");
+			}
 		}
 	}
 }
