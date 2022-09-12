@@ -16,7 +16,6 @@ public class FareCalculatorService {
 		// TODO: Some tests are failing here. Need to check if this logic is correct
 		float durationMillis = outHour - inHour;
 		float durationHour = durationMillis / 1000 / 60 / 60; // Convert from milliseconds to hours
-		System.out.println("duration: " + durationHour);
 
 		if (durationHour <= 0.5) {  // Free half hour
 			switch (ticket.getParkingSpot().getParkingType()) {
