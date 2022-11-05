@@ -11,13 +11,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.Any;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static org.mockito.Mockito.*;
+
 import java.util.Date;
 
+@ExtendWith(MockitoExtension.class)
 public class FareCalculatorServiceTest {
 
 	@Mock
@@ -34,6 +38,7 @@ public class FareCalculatorServiceTest {
 	@BeforeEach
 	private void setUpPerTest() {
 		ticket = new Ticket();
+		fareCalculatorService.userUtils = userUtils;
 	}
 
 	@Test
@@ -176,8 +181,10 @@ public class FareCalculatorServiceTest {
 	@Test
 	@Tag("FareCarCalculationRecurringUser")
 	public void calculateFareCarWithMoreThanADayParkingTimeWithRecurringUser() {
+		//ARRANGE
 		when(userUtils.isRecurringUser(any())).thenReturn(true);
 		
+		//ACT
 		Date inTime = new Date();
 		inTime.setTime(System.currentTimeMillis() - (24 * 60 * 60 * 1000));// 24 hours parking time should give 24 *
 																			// parking fare per hour
@@ -188,6 +195,8 @@ public class FareCalculatorServiceTest {
 		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
 		fareCalculatorService.calculateFare(ticket);
-		assertEquals((24 * Fare.CAR_RATE_PER_HOUR), ticket.getPrice());
+		
+		//ASSERT
+		assertEquals((24 * Fare.CAR_RATE_PER_HOUR * 0.95), ticket.getPrice());
 	}
 }

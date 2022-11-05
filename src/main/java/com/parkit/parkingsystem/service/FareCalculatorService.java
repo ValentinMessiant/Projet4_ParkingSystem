@@ -5,13 +5,13 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.util.UserUtils;
 
 public class FareCalculatorService {
+	public UserUtils userUtils = new UserUtils();
 	
 	public void calculateFare(Ticket ticket) {
 		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
 			throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
 		}
 		
-		UserUtils userUtils = new UserUtils();
 		// No reduction = set multiplicator reduction to 1
 		double recurringUserReductionMultiplicator = 1;
 		if(userUtils.isRecurringUser(ticket.getVehicleRegNumber())) {
