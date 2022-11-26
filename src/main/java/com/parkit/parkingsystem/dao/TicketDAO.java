@@ -77,7 +77,7 @@ public class TicketDAO {
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_EXISTING_TICKET);
-            ps.setString(1, ticket.getVehicleRegNumber());
+            ps.setString(1, vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
             	ticket = new Ticket();
