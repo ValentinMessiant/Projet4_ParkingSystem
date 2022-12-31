@@ -68,8 +68,9 @@ public class ParkingDataBaseIT {
     }
 
     @Test
-    public void testParkingLotExit(){
+    public void testParkingLotExit() throws Exception{
         testParkingACar();
+        Thread.sleep(100);
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
         Ticket ticket = ticketDAO.getTicket("ABCDEF");
